@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - MediCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css"> <!-- Reusing styles mostly -->
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="sidebar glass-panel-strong">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-notes-medical"></i> MediCare
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><i class="fa-solid fa-calendar-check"></i> Appointments</a>
+                <a href="index.html" class="nav-item"><i class="fa-solid fa-globe"></i> View Website</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item text-danger" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header glass-panel">
+                <h2>Dashboard Overview</h2>
+                <div class="user-profile">
+                    <div class="avatar"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div class="user-info">
+                        <span class="user-name" id="doctorNameDisplay">Dr. Admin</span>
+                        <span class="user-role">Doctor</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div class="stats-row">
+                    <div class="stat-card glass-panel text-center">
+                        <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                        <h3 class="stat-number" id="totalAppt">0</h3>
+                        <p class="stat-text">Total Appointments</p>
+                    </div>
+                    <div class="stat-card glass-panel text-center">
+                        <div class="stat-icon text-warning"><i class="fa-solid fa-spinner"></i></div>
+                        <h3 class="stat-number" id="pendingAppt">0</h3>
+                        <p class="stat-text">Pending</p>
+                    </div>
+                    <div class="stat-card glass-panel text-center">
+                        <div class="stat-icon text-success"><i class="fa-solid fa-check-double"></i></div>
+                        <h3 class="stat-number" id="completedAppt">0</h3>
+                        <p class="stat-text">Completed</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel table-container">
+                    <div class="table-header">
+                        <h3><i class="fa-solid fa-list-ul"></i> Recent Appointments</h3>
+                        <button class="btn btn-outline btn-sm" onclick="loadAppointments()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Phone</th>
+                                    <th>Doctor</th>
+                                    <th>Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentsTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">Loading appointments...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
