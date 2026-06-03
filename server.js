@@ -27,7 +27,7 @@ pool.getConnection((err, connection) => {
         console.error('Error connecting to MySQL database: ', err);
     } else {
         console.log('Successfully connected to MySQL database');
-        
+
         // Auto-migration to add auth columns to existing database effortlessly
         connection.query("SHOW COLUMNS FROM doctors LIKE 'username'", (err, results) => {
             if (results && results.length === 0) {
@@ -61,7 +61,7 @@ app.get('/api/doctors', (req, res) => {
 // Book an appointment (Patient)
 app.post('/api/appointments', (req, res) => {
     const { patient_name, patient_phone, doctor_id, appointment_date, time_slot } = req.body;
-    
+
     if (!patient_name || !patient_phone || !doctor_id || !appointment_date || !time_slot) {
         return res.status(400).json({ error: 'All fields are required' });
     }
@@ -70,7 +70,7 @@ app.post('/api/appointments', (req, res) => {
         INSERT INTO appointments (patient_name, patient_phone, doctor_id, appointment_date, time_slot)
         VALUES (?, ?, ?, ?, ?)
     `;
-    
+
     pool.query(query, [patient_name, patient_phone, doctor_id, appointment_date, time_slot], (err, result) => {
         if (err) {
             console.error('Failed to book appointment:', err);
@@ -98,7 +98,7 @@ app.post('/api/login', (req, res) => {
 app.get('/api/appointments', (req, res) => {
     const { doctorId } = req.query;
     let query = `
-        SELECT a.id, a.patient_name, a.patient_phone, DATE_FORMAT(a.appointment_date, '%Y-%m-%d') as appointment_date, a.time_slot, a.status, d.name as doctor_name, d.specialization
+        SELECT a.id, a.patient_name, a.patient_phone, DATE_FORMAT(a.appointment_date, '%d-%m-%Y') as appointment_date, a.time_slot, a.status, d.name as doctor_name, d.specialization
         FROM appointments a
         JOIN doctors d ON a.doctor_id = d.id
     `;
@@ -110,7 +110,7 @@ app.get('/api/appointments', (req, res) => {
     }
 
     query += ` ORDER BY a.appointment_date ASC, a.time_slot ASC `;
-    
+
     pool.query(query, queryParams, (err, results) => {
         if (err) {
             console.error('Failed to fetch appointments:', err);
@@ -124,13 +124,13 @@ app.get('/api/appointments', (req, res) => {
 app.put('/api/appointments/:id', (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
-    
+
     if (!status || !['Pending', 'Approved', 'Completed', 'Cancelled'].includes(status)) {
         return res.status(400).json({ error: 'Invalid status' });
     }
 
     const query = 'UPDATE appointments SET status = ? WHERE id = ?';
-    
+
     pool.query(query, [status, id], (err, result) => {
         if (err) {
             console.error('Failed to update appointment status:', err);
